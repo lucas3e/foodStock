@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MdNotifications, MdAccountCircle } from 'react-icons/md';
+import { MdNotifications, MdAccountCircle, MdMenu  } from 'react-icons/md';
 
 const HeaderContainer = styled.header`
   background-color: white;
@@ -49,9 +49,25 @@ const UserInfo = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
 `;
 
-const Header = () => {
+const MenuButton = styled.button`
+  display: flex;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const Header = ({ onMenuClick }) => {
   return (
     <HeaderContainer>
+      <MenuButton onClick={onMenuClick}>
+        <MdMenu />
+      </MenuButton>
       <Title>Dashboard</Title>
       <Actions>
         <IconButton>
@@ -65,5 +81,7 @@ const Header = () => {
     </HeaderContainer>
   );
 };
+
+
 
 export default Header;

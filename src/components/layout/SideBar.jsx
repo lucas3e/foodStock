@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { 
@@ -6,7 +5,8 @@ import {
   MdRestaurantMenu, 
   MdInventory, 
   MdBarChart, 
-  MdPeople 
+  MdPeople, 
+  MdMenu 
 } from 'react-icons/md';
 
 const SidebarContainer = styled.div`
@@ -15,10 +15,16 @@ const SidebarContainer = styled.div`
   color: white;
   height: 100vh;
   position: fixed;
-  left: 0;
+  left: ${({ isOpen }) => (isOpen ? '0' : '-250px')};
   top: 0;
   z-index: 100;
+  transition: left 0.3s ease;
+
+  @media (min-width: 768px) {
+    left: 0;
+  }
 `;
+
 
 const Logo = styled.div`
   padding: ${({ theme }) => theme.spacing.lg};
@@ -56,29 +62,50 @@ const NavItem = styled(NavLink)`
   }
 `;
 
-const Sidebar = () => {
+const Overlay = styled.div`
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 90;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const Sidebar = ({ isOpen, onClose }) => {
   return (
-    <SidebarContainer>
-      <Logo>FoodStock</Logo>
-      <Nav>
-        <NavItem to="/">
-          <MdDashboard /> Dashboard
-        </NavItem>
-        <NavItem to="/cardapios">
-          <MdRestaurantMenu /> Cardápios
-        </NavItem>
-        <NavItem to="/estoque">
-          <MdInventory /> Estoque
-        </NavItem>
-        <NavItem to="/relatorios">
-          <MdBarChart /> Relatórios
-        </NavItem>
-        <NavItem to="/usuarios">
-          <MdPeople /> Usuários
-        </NavItem>
-      </Nav>
-    </SidebarContainer>
+    <>
+    <Overlay isOpen={isOpen} onClick={onClose} />
+      <SidebarContainer isOpen={isOpen}>
+        <Logo>FoodStock</Logo>
+        <Nav>
+          <NavItem to="/" onClick={onClose}>
+            <MdDashboard /> Dashboard
+          </NavItem>
+          <NavItem to="/cardapios" onClick={onClose}>
+            <MdRestaurantMenu /> Cardápios
+          </NavItem>
+          <NavItem to="/estoque" onClick={onClose}>
+            <MdInventory /> Estoque
+          </NavItem>
+          <NavItem to="/relatorios" onClick={onClose}>
+            <MdBarChart /> Relatórios
+          </NavItem>
+          <NavItem to="/usuarios" onClick={onClose}>
+            <MdPeople /> Usuários
+          </NavItem>
+        </Nav>
+      </SidebarContainer>
+    </>
   );
 };
+
+
+
 
 export default Sidebar;

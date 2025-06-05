@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './SideBar';
 import Header from './Header';
@@ -14,7 +14,11 @@ const MainContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 250px; /* Largura da sidebar */
+  margin-left: 250px;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
 `;
 
 const Content = styled.div`
@@ -23,11 +27,21 @@ const Content = styled.div`
 `;
 
 const Layout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleToggleSidebar = () => {
+    setSidebarOpen((prev) => !prev);
+  };
+
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   return (
     <LayoutContainer>
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} onClose={handleCloseSidebar} />
       <MainContent>
-        <Header />
+        <Header onMenuClick={handleToggleSidebar} />
         <Content>
           <Outlet />
         </Content>
